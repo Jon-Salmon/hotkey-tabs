@@ -1,0 +1,35 @@
+{
+
+  "manifest_version": 2,
+  "name": "Hotkey Tabs",
+  "version": "0.1.6a1",
+  "description": "Quick switching and loading of commonly used webpages via hotkeys.",
+  "icons": {
+    "48": "img/logo-48.png",
+    "96": "img/logo-96.png"
+  },
+
+  "background": {
+    "scripts": ["background-script.js"]
+  },
+
+  "permissions": [
+    "tabs",
+    "notifications",
+    "storage"
+  ],
+
+  "options_ui": {
+    "page": "options/options.html"
+  },
+
+  "commands": {
+    "changeTab": {
+      "suggested_key": {
+        "default": "Alt+1"
+      },
+      "description": "Send a 'toggle-feature' event"
+    }
+  }
+
+}
