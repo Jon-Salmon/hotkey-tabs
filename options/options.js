@@ -2,22 +2,29 @@ function saveOptions(e) {
   e.preventDefault();
   browser.storage.local.set({
     pref: {
-      key:
-      [
-        {
-          action: document.querySelector("#a1").value,
-          url: document.querySelector("#s1").value
+      mode: document.querySelector("#mode").value,
+      key: function(){
+        var settings = []
+        for (var i = 0; i < 3; i++){
+          settings.push({
+            action: document.querySelector("#a" + i).value,
+            url: document.querySelector("#s" + i).value
+          });
         }
-      ]
+        return settings;
+      }()
     }
   });
-}
+};
 
 function restoreOptions() {
 
   function setPref(result) {
-    document.querySelector("#a1").value = result.pref.key[0].action || "";
-    document.querySelector("#s1").value = result.pref.key[0].url || "";
+    document.querySelector("#mode").value = result.pref.mode || "1";
+    for (var i = 0; i < 3; i++){
+      document.querySelector("#a" + i).value = result.pref.key[i].action || "1";
+      document.querySelector("#s" + i).value = result.pref.key[i].url || "";
+    }
   }
 
   function onError(error) {

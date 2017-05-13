@@ -5,6 +5,8 @@
   "version": "0.1.6a1",
   "description": "Quick switching and loading of commonly used webpages via hotkeys.",
   "icons": {
+    "16": "img/logo-16.png",
+    "32": "img/logo-32.png",
     "48": "img/logo-48.png",
     "96": "img/logo-96.png"
   },
@@ -16,7 +18,8 @@
   "permissions": [
     "tabs",
     "notifications",
-    "storage"
+    "storage",
+    "contextMenus"
   ],
 
   "options_ui": {
@@ -24,11 +27,17 @@
   },
 
   "commands": {
-    "changeTab": {
+    "alt1": {
       "suggested_key": {
         "default": "Alt+1"
       },
-      "description": "Send a 'toggle-feature' event"
+      "description": "Hotkey Tabs: Switch tab 1"
+    },
+    "alt2": {
+      "suggested_key": {
+        "default": "Alt+2"
+      },
+      "description": "Hotkey Tabs: Switch tab 2"
     }
   }
 

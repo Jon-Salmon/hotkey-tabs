@@ -8,14 +8,42 @@
   <body>
 
     <form>
-        <h3>Alt-1</h3>
-        <label><b>URL</b><input class="input" type="text" id="s1" ></label>
+        <h3>General</h3>
+        <label><b>Switching Mode: </b></label>
+        <select class="input" id="mode">
+           <option value="1">First Matching Tab</option>
+           <option value="2">Last Matching Tab</option>
+        </select>
         <br>
-        <label><b>Action</b></label>
+
+        <h3>Alt-1</h3>
+        <label><b>URL: </b><input class="input" type="text" id="s1" ></label>
+        <br>
+        <label><b>Action: </b></label>
         <select class="input" id="a1">
            <option value="1">Switch/Open Site</option>
            <option value="2">Switch/Open Page</option>
         </select>
+        <br>
+
+        <h3>Alt-2</h3>
+        <label><b>URL: </b><input class="input" type="text" id="s2" ></label>
+        <br>
+        <label><b>Action: </b></label>
+        <select class="input" id="a2">
+           <option value="1">Switch/Open Site</option>
+           <option value="2">Switch/Open Page</option>
+        </select>
+
+        <h3>Alt-0</h3>
+        <label><b>URL: </b><input class="input" type="text" id="s0" ></label>
+        <br>
+        <label><b>Action: </b></label>
+        <select class="input" id="a0">
+           <option value="1">Switch/Open Site</option>
+           <option value="2">Switch/Open Page</option>
+        </select>
+        <br>
     </form>
 
     <script src="options.js"></script>
