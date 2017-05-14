@@ -15,6 +15,13 @@
     "scripts": ["background-script.js"]
   },
 
+  "content_scripts": [
+  {
+    "matches": ["<all_urls>"],
+    "js": ["hotkey.js"]
+  }
+],
+
   "permissions": [
     "tabs",
     "notifications",
@@ -24,21 +31,6 @@
 
   "options_ui": {
     "page": "options/options.html"
-  },
-
-  "commands": {
-    "alt1": {
-      "suggested_key": {
-        "default": "Alt+1"
-      },
-      "description": "Hotkey Tabs: Switch tab 1"
-    },
-    "alt2": {
-      "suggested_key": {
-        "default": "Alt+2"
-      },
-      "description": "Hotkey Tabs: Switch tab 2"
-    }
   }
 
 }

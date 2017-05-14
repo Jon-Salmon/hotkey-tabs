@@ -3,6 +3,7 @@ function saveOptions(e) {
   browser.storage.local.set({
     pref: {
       mode: document.querySelector("#mode").value,
+      modifier: document.querySelector("#modifier").value,
       key: function() {
         var settings = []
         for (var i = 1; i < 3; i++) {
@@ -21,6 +22,7 @@ function restoreOptions() {
 
   function setPref(result) {
     document.querySelector("#mode").value = result.pref.mode || "1";
+    document.querySelector("#modifier").value = result.pref.modifier || "Alt";
     for (var i = 1; i < 3; i++) {
       document.querySelector("#a" + i).value = result.pref.key[i].action || "1";
       document.querySelector("#s" + i).value = result.pref.key[i].url || "";

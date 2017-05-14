@@ -1,4 +1,7 @@
 function tabMatch(url, search, action) {
+  if (search === "") {
+    return false;
+  }
   switch (action) {
     case "1":
     default:
@@ -88,13 +91,17 @@ function pickTab(key) {
       }
     });
   });
-};
+}
 
-browser.commands.onCommand.addListener(function(command) {
-  var id = parseInt(command.split("").pop());
-  if (command === "alt" + id) {
-    pickTab(id);
-  }
+// browser.commands.onCommand.addListener(function(command) {
+//   var id = parseInt(command.split("").pop());
+//   if (command === "alt" + id) {
+//     pickTab(id);
+//   }
+// });
+
+browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  pickTab(parseInt(request.key));
 });
 
 
@@ -123,6 +130,7 @@ browser.runtime.onInstalled.addListener(function(details) {
       browser.storage.local.set({
         pref: {
           mode: "1",
+          modifier: "Alt",
           key: function() {
             var settings = []
             for (var i = 0; i < 10; i++) {
@@ -170,11 +178,11 @@ browser.contextMenus.create({
   contexts: ["all"]
 });
 
-browser.contextMenus.create({
-  id: "alt2",
-  title: "",
-  contexts: ["all"]
-});
+// browser.contextMenus.create({
+//   id: "alt2",
+//   title: "",
+//   contexts: ["all"]
+// });
 
 browser.contextMenus.create({
   id: "alt0",
