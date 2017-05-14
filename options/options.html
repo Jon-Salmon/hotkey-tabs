@@ -1,53 +1,141 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8">
-  </head>
 
-  <body>
+<head>
+  <meta charset="utf-8">
+  <style>
+    *,
+    *::after,
+    *::before {
+      box-sizing: border-box;
+    }
 
-    <form>
-        <h3>General</h3>
-        <label><b>Switching Mode: </b></label>
-        <select class="input" id="mode">
+    body {
+      /*font-size: 16px;*/
+      font-family: Helvetica;
+      font-weight: normal;
+      color: rgb(51, 51, 51);
+    }
+
+    h3 {
+      margin: 8px 0 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    tr.line td div {
+      border-top: 1px solid #c1c1c1;
+      margin: 10px 0 10px;
+    }
+
+    td.label {
+      width: 150px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 36px;
+      padding: 6px 12px;
+      border: 1px solid #ccd0d2;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <form>
+    <table>
+      <tr>
+        <td>
+          <h3>General</h3>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="label">
+          <label>Switching Mode: </label>
+        </td>
+        <td class="input">
+          <select class="input" id="mode">
            <option value="1">First Matching Tab</option>
            <option value="2">Last Matching Tab</option>
         </select>
-        <br>
+        </td>
+      </tr>
 
-        <h3>Alt-1</h3>
-        <label><b>URL: </b><input class="input" type="text" id="s1" ></label>
-        <br>
-        <label><b>Action: </b></label>
-        <select class="input" id="a1">
+
+      <tr class="line">
+        <td colspan="2">
+          <div></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">
+          <h3>Alt-1</h3>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="label">
+          <label>URL: </label>
+        </td>
+        <td class="input">
+          <input class="input" type="text" id="s1">
+        </td>
+      </tr>
+      <tr>
+        <td class="label">
+          <label>Action: </label>
+        </td>
+        <td class="input">
+          <select class="input" id="a1">
            <option value="1">Switch/Open Site</option>
            <option value="2">Switch/Open Page</option>
         </select>
-        <br>
+        </td>
+      </tr>
 
-        <h3>Alt-2</h3>
-        <label><b>URL: </b><input class="input" type="text" id="s2" ></label>
-        <br>
-        <label><b>Action: </b></label>
-        <select class="input" id="a2">
+
+      <tr class="line">
+        <td colspan="2">
+          <div></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">
+          <h3>Alt-2</h3>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="label">
+          <label>URL: </label>
+        </td>
+        <td class="input">
+          <input class="input" type="text" id="s2">
+        </td>
+      </tr>
+      <tr>
+        <td class="label">
+          <label>Action: </label>
+        </td>
+        <td class="input">
+          <select class="input" id="a2">
            <option value="1">Switch/Open Site</option>
            <option value="2">Switch/Open Page</option>
         </select>
+        </td>
+      </tr>
+    </table>
+  </form>
 
-        <h3>Alt-0</h3>
-        <label><b>URL: </b><input class="input" type="text" id="s0" ></label>
-        <br>
-        <label><b>Action: </b></label>
-        <select class="input" id="a0">
-           <option value="1">Switch/Open Site</option>
-           <option value="2">Switch/Open Page</option>
-        </select>
-        <br>
-    </form>
+  <script src="options.js"></script>
 
-    <script src="options.js"></script>
-
-  </body>
+</body>
 
 </html>

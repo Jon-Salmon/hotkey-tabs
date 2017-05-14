@@ -3,9 +3,9 @@ function saveOptions(e) {
   browser.storage.local.set({
     pref: {
       mode: document.querySelector("#mode").value,
-      key: function(){
+      key: function() {
         var settings = []
-        for (var i = 0; i < 3; i++){
+        for (var i = 1; i < 3; i++) {
           settings.push({
             action: document.querySelector("#a" + i).value,
             url: document.querySelector("#s" + i).value
@@ -21,7 +21,7 @@ function restoreOptions() {
 
   function setPref(result) {
     document.querySelector("#mode").value = result.pref.mode || "1";
-    for (var i = 0; i < 3; i++){
+    for (var i = 1; i < 3; i++) {
       document.querySelector("#a" + i).value = result.pref.key[i].action || "1";
       document.querySelector("#s" + i).value = result.pref.key[i].url || "";
     }
@@ -38,6 +38,6 @@ function restoreOptions() {
 document.addEventListener("DOMContentLoaded", restoreOptions);
 
 var input = document.querySelectorAll('.input');
-for(var i=0;i<input.length;i++){
-  input[i].addEventListener('change',saveOptions);
+for (var i = 0; i < input.length; i++) {
+  input[i].addEventListener('change', saveOptions);
 }

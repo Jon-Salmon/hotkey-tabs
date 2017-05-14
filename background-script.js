@@ -1,45 +1,93 @@
-function pickTab(key){
-    let pref = browser.storage.local.get("pref");
-    pref.then((storage) => {
-      var action = storage.pref.key[key].action;
-      var tabUrl = storage.pref.key[key].url;
-
-      if (tabUrl.substring(0,4) === "http") {
-      	var temp = tabUrl.split('/');
-        temp.splice(0,2)
-        tabUrl = temp.join("/");
+function tabMatch(url, search, action) {
+  switch (action) {
+    case "1":
+    default:
+      if (url.indexOf(search) !== -1) {
+        return true;
+        break;
       }
 
-      if (action == 1){
-      	var searchString = tabUrl.split('/')[0];
-        searchString = "*://" + searchString + "/*";
-      } else {
-        var searchString = ["*://" + tabUrl + "/", "*://" + tabUrl];
+    case "2":
+      if (url.substring(0, 4) === "http") {
+        var temp = url.split('/');
+        temp.splice(0, 2)
+        url = temp.join("/");
       }
-      var matchingTabs = browser.tabs.query({url: searchString});
-      matchingTabs.then((tabs) => {
-        if (tabs.length === 0){
-          var newUrl = "https://" + tabUrl;
-          browser.tabs.create({
-            url: newUrl
-          });
-        } else {
+      if (url === search) {
+        return true;
+        break;
+      }
+  }
+  return false;
+}
 
-          if (storage.pref.mode == "2"){
-            var tabId = tabs.length - 1;
-          } else {
-            var tabId = 0;
+
+function pickTab(key) {
+  let pref = browser.storage.local.get("pref");
+  let allTabs = browser.tabs.query({});
+
+  pref.then((storage) => {
+    var action = storage.pref.key[key].action;
+    var tabUrl = storage.pref.key[key].url;
+    var prefix = "https:";
+
+    if (tabUrl.substring(0, 4) === "http") {
+      var temp = tabUrl.split('/');
+      prefix = temp[0];
+      temp.splice(0, 2)
+      tabUrl = temp.join("/");
+    }
+
+    switch (action) {
+      case "1":
+      default:
+        var searchString = tabUrl.split('/')[0];
+        break;
+      case "2":
+        var searchString = tabUrl;
+        break;
+    }
+
+    var tabFound = false;
+    allTabs.then((tabs) => {
+      switch (storage.pref.mode) {
+        case "1":
+        default:
+          for (var i = 0; i < tabs.length; i++) {
+            if (tabMatch(tabs[i].url, searchString, action)) {
+              var tabId = i;
+              tabFound = true;
+              break;
+            }
           }
+          break;
 
-          browser.tabs.update(tabs[tabId].id, {
-            active: true
-          });
-          browser.windows.update(tabs[tabId].windowId, {
-            focused: true
-          });
-        }
-      });
+        case "2":
+          for (var i = tabs.length - 1; i >= 0; i--) {
+            if (tabMatch(tabs[i].url, searchString, action)) {
+              var tabId = i;
+              tabFound = true;
+              break;
+            }
+          }
+          break;
+      }
+
+      if (tabFound) {
+        browser.tabs.update(tabs[tabId].id, {
+          active: true
+        });
+        browser.windows.update(tabs[tabId].windowId, {
+          focused: true
+        });
+      } else {
+        var newUrl = prefix + "//" + tabUrl;
+        browser.tabs.create({
+          url: newUrl
+        });
+      }
     });
+  });
 };
 
 browser.commands.onCommand.addListener(function(command) {
@@ -53,14 +101,14 @@ browser.commands.onCommand.addListener(function(command) {
 // Manage Install/Update
 
 browser.notifications.onClicked.addListener(function(notificationId) {
-  if (notificationId == "hotkeytabs_update"){
+  if (notificationId == "hotkeytabs_update") {
     browser.tabs.create({
-      url:"http://addons.mozilla.org/en-GB/firefox/addon/hotkey-tabs/versions/"
+      url: "http://addons.mozilla.org/en-GB/firefox/addon/hotkey-tabs/versions/"
     });
   };
 });
 
-browser.runtime.onInstalled.addListener(function(details){
+browser.runtime.onInstalled.addListener(function(details) {
   var manifest = browser.runtime.getManifest();
   browser.notifications.create("hotkeytabs_update", {
     "type": "basic",
@@ -71,13 +119,13 @@ browser.runtime.onInstalled.addListener(function(details){
   // Initialise defaults if not set
   let temp = browser.storage.local.get("pref");
   temp.then((storage) => {
-    if (storage.pref === undefined){
+    if (storage.pref === undefined) {
       browser.storage.local.set({
         pref: {
           mode: "1",
-          key: function(){
+          key: function() {
             var settings = []
-            for (var i = 0; i < 10; i++){
+            for (var i = 0; i < 10; i++) {
               settings.push({
                 action: "1",
                 url: ""
@@ -94,22 +142,20 @@ browser.runtime.onInstalled.addListener(function(details){
 
 // Context Menu backend
 
-function updateContext(){
+function updateContext() {
   let storage = browser.storage.local.get("pref");
   storage.then((storage) => {
 
-    for (var i = 0; i<10; i++){
-      if (storage.pref.key[i] !== ""){
+    for (var i = 0; i < 10; i++) {
+      if (storage.pref.key[i] !== "") {
         browser.contextMenus.update(
-          "alt" + i,
-          {
+          "alt" + i, {
             title: "Bind to ALT-" + i + " (" + ((storage.pref.key[i].url) ? storage.pref.key[i].url : "...") + ")"
           }
         );
       } else {
         browser.contextMenus.update(
-          "alt" + i,
-          {
+          "alt" + i, {
             title: "Bind to ALT-" + i + " (...)"
           }
         );
@@ -150,6 +196,6 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
   });
 });
 
-browser.storage.onChanged.addListener(function(){
+browser.storage.onChanged.addListener(function() {
   updateContext();
 });
