@@ -38,6 +38,54 @@
         "default": "Alt+2"
       },
       "description": "Hotkey Tabs: Switch tab 2"
+    },
+    "alt3": {
+      "suggested_key": {
+        "default": "Alt+3"
+      },
+      "description": "Hotkey Tabs: Switch tab 3"
+    },
+    "alt4": {
+      "suggested_key": {
+        "default": "Alt+4"
+      },
+      "description": "Hotkey Tabs: Switch tab 4"
+    },
+    "alt5": {
+      "suggested_key": {
+        "default": "Alt+5"
+      },
+      "description": "Hotkey Tabs: Switch tab 5"
+    },
+    "alt6": {
+      "suggested_key": {
+        "default": "Alt+6"
+      },
+      "description": "Hotkey Tabs: Switch tab 6"
+    },
+    "alt7": {
+      "suggested_key": {
+        "default": "Alt+7"
+      },
+      "description": "Hotkey Tabs: Switch tab 7"
+    },
+    "alt8": {
+      "suggested_key": {
+        "default": "Alt+8"
+      },
+      "description": "Hotkey Tabs: Switch tab 8"
+    },
+    "alt9": {
+      "suggested_key": {
+        "default": "Alt+9"
+      },
+      "description": "Hotkey Tabs: Switch tab 9"
+    },
+    "alt0": {
+      "suggested_key": {
+        "default": "Alt+0"
+      },
+      "description": "Hotkey Tabs: Switch tab 0"
     }
   }
 

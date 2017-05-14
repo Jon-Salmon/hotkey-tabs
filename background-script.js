@@ -1,4 +1,7 @@
 function tabMatch(url, search, action) {
+  if (search === "") {
+    return false;
+  }
   switch (action) {
     case "1":
     default:
@@ -172,6 +175,48 @@ browser.contextMenus.create({
 
 browser.contextMenus.create({
   id: "alt2",
+  title: "",
+  contexts: ["all"]
+});
+
+browser.contextMenus.create({
+  id: "alt3",
+  title: "",
+  contexts: ["all"]
+});
+
+browser.contextMenus.create({
+  id: "alt4",
+  title: "",
+  contexts: ["all"]
+});
+
+browser.contextMenus.create({
+  id: "alt5",
+  title: "",
+  contexts: ["all"]
+});
+
+browser.contextMenus.create({
+  id: "alt6",
+  title: "",
+  contexts: ["all"]
+});
+
+browser.contextMenus.create({
+  id: "alt7",
+  title: "",
+  contexts: ["all"]
+});
+
+browser.contextMenus.create({
+  id: "alt8",
+  title: "",
+  contexts: ["all"]
+});
+
+browser.contextMenus.create({
+  id: "alt9",
   title: "",
   contexts: ["all"]
 });
