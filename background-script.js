@@ -1,3 +1,7 @@
+// Global Variables
+var currentCounter = 0;
+var tabArray = [];
+
 function tabMatch(url, search, action) {
   if (search === "") {
     return false;
@@ -54,8 +58,30 @@ function pickTab(key) {
     var tabFound = false;
     allTabs.then((tabs) => {
       switch (storage.pref.mode) {
-        case "1":
+        case "0":
         default:
+          var matchArray = [];
+          var tabId = 0;
+          var maxValue = 0;
+          for (var i = 0; i < tabs.length; i++) {
+            if (tabMatch(tabs[i].url, searchString, action)) {
+              matchArray.push(i);
+              tabFound = true;
+            }
+          }
+          for (var i = 0; i < matchArray.length; i++) {
+            var temp = tabArray[tabs[matchArray[i]].id];
+            if (typeof temp == "undefined") {
+              temp = 0;
+            }
+            if (temp >= maxValue) {
+              tabId = matchArray[i];
+              maxValue = temp;
+            }
+          }
+          break;
+
+        case "1":
           for (var i = 0; i < tabs.length; i++) {
             if (tabMatch(tabs[i].url, searchString, action)) {
               var tabId = i;
@@ -83,7 +109,7 @@ function pickTab(key) {
         browser.windows.update(tabs[tabId].windowId, {
           focused: true
         });
-      } else {
+      } else if (tabUrl !== "") {
         var newUrl = prefix + "//" + tabUrl;
         browser.tabs.create({
           url: newUrl
@@ -140,6 +166,14 @@ browser.runtime.onInstalled.addListener(function(details) {
       });
     }
   });
+});
+
+
+// Most reecnt tab
+
+browser.tabs.onActivated.addListener(function(activeInfo) {
+  tabArray[activeInfo.tabId] = currentCounter;
+  currentCounter++;
 });
 
 

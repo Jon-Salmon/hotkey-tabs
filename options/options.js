@@ -20,7 +20,7 @@ function saveOptions(e) {
 function restoreOptions() {
 
   function setPref(result) {
-    document.querySelector("#mode").value = result.pref.mode || "1";
+    document.querySelector("#mode").value = result.pref.mode || "0";
     for (var i = 0; i < 10; i++) {
       document.querySelector("#a" + i).value = result.pref.key[i].action || "1";
       document.querySelector("#s" + i).value = result.pref.key[i].url || "";
