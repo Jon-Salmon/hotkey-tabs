@@ -2,6 +2,11 @@
 var currentCounter = 0;
 var tabArray = [];
 
+
+
+// Functions
+
+// Tab switching
 function tabMatch(url, search, action) {
   if (search === "") {
     return false;
@@ -119,66 +124,7 @@ function pickTab(key) {
   });
 };
 
-browser.commands.onCommand.addListener(function(command) {
-  var id = parseInt(command.split("").pop());
-  if (command === "alt" + id) {
-    pickTab(id);
-  }
-});
-
-
-// Manage Install/Update
-
-browser.notifications.onClicked.addListener(function(notificationId) {
-  if (notificationId == "hotkeytabs_update") {
-    browser.tabs.create({
-      url: "http://addons.mozilla.org/en-GB/firefox/addon/hotkey-tabs/versions/"
-    });
-  };
-});
-
-browser.runtime.onInstalled.addListener(function(details) {
-  var manifest = browser.runtime.getManifest();
-  browser.notifications.create("hotkeytabs_update", {
-    "type": "basic",
-    "title": "Hotkey Tabs has been updated!",
-    "message": "You are now running version V" + manifest.version + "\nClick here for release notes."
-  });
-
-  // Initialise defaults if not set
-  let temp = browser.storage.local.get("pref");
-  temp.then((storage) => {
-    if (storage.pref === undefined) {
-      browser.storage.local.set({
-        pref: {
-          mode: "1",
-          key: function() {
-            var settings = []
-            for (var i = 0; i < 10; i++) {
-              settings.push({
-                action: "1",
-                url: ""
-              });
-            }
-            return settings;
-          }()
-        }
-      });
-    }
-  });
-});
-
-
-// Most reecnt tab
-
-browser.tabs.onActivated.addListener(function(activeInfo) {
-  tabArray[activeInfo.tabId] = currentCounter;
-  currentCounter++;
-});
-
-
-// Context Menu backend
-
+// Context menus backend
 function updateContext() {
   let storage = browser.storage.local.get("pref");
   storage.then((storage) => {
@@ -201,6 +147,11 @@ function updateContext() {
   });
 };
 
+
+
+// Startup
+
+// Context Menu Creation
 browser.contextMenus.create({
   id: "alt1",
   title: "",
@@ -263,6 +214,67 @@ browser.contextMenus.create({
 
 updateContext();
 
+
+
+
+// Events
+
+// Listen to shortcuts
+browser.commands.onCommand.addListener(function(command) {
+  var id = parseInt(command.split("").pop());
+  if (command === "alt" + id) {
+    pickTab(id);
+  }
+});
+
+
+// Manage Install/Update
+browser.notifications.onClicked.addListener(function(notificationId) {
+  if (notificationId == "hotkeytabs_update") {
+    browser.tabs.create({
+      url: "http://addons.mozilla.org/en-GB/firefox/addon/hotkey-tabs/versions/"
+    });
+  };
+});
+
+browser.runtime.onInstalled.addListener(function(details) {
+  var manifest = browser.runtime.getManifest();
+  browser.notifications.create("hotkeytabs_update", {
+    "type": "basic",
+    "title": "Hotkey Tabs has been updated!",
+    "message": "You are now running version V" + manifest.version + "\nClick here for release notes."
+  });
+
+  // Initialise defaults if not set
+  let temp = browser.storage.local.get("pref");
+  temp.then((storage) => {
+    if (storage.pref === undefined) {
+      browser.storage.local.set({
+        pref: {
+          mode: "0",
+          key: function() {
+            var settings = []
+            for (var i = 0; i < 10; i++) {
+              settings.push({
+                action: "1",
+                url: ""
+              });
+            }
+            return settings;
+          }()
+        }
+      });
+    }
+  });
+});
+
+// Most reecnt tab
+browser.tabs.onActivated.addListener(function(activeInfo) {
+  tabArray[activeInfo.tabId] = currentCounter;
+  currentCounter++;
+});
+
+// Context Menu listner
 browser.contextMenus.onClicked.addListener((info, tab) => {
   var id = parseInt(info.menuItemId.split("").pop());
   let storage = browser.storage.local.get("pref");
