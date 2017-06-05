@@ -11,6 +11,7 @@ function tabMatch(url, search, action) {
   if (search === "") {
     return false;
   }
+
   switch (action) {
     case "1":
     default:
@@ -59,10 +60,8 @@ function pickTab(key) {
 
     switch (action) {
       case "1":
-      default:
-        var searchString = tabUrl.split('/')[0];
-        break;
       case "2":
+      default:
         var searchString = tabUrl;
         break;
       case "3":
@@ -261,8 +260,11 @@ browser.commands.onCommand.addListener(function(command) {
 // Manage Install/Update
 browser.notifications.onClicked.addListener(function(notificationId) {
   if (notificationId == "hotkeytabs_update") {
+    // browser.tabs.create({
+    //   url: "http://addons.mozilla.org/en-GB/firefox/addon/hotkey-tabs/versions/"
+    // });
     browser.tabs.create({
-      url: "http://addons.mozilla.org/en-GB/firefox/addon/hotkey-tabs/versions/"
+      url: "update.html"
     });
   };
 });
@@ -308,9 +310,17 @@ browser.tabs.onActivated.addListener(function(activeInfo) {
 browser.contextMenus.onClicked.addListener((info, tab) => {
   var id = parseInt(info.menuItemId.split("").pop());
   let storage = browser.storage.local.get("pref");
+  var tabUrl = tab.url;
+
+  if (tabUrl.substring(0, 4) === "http") {
+    var temp = tabUrl.split('/');
+    temp.splice(3);
+    tabUrl = temp.join("/");
+  }
+
   storage.then((storage) => {
     var newPrefs = storage.pref;
-    newPrefs.key[id].url = tab.url;
+    newPrefs.key[id].url = tabUrl;
     browser.storage.local.set({
       pref: newPrefs
     });
