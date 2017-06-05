@@ -16,8 +16,8 @@ function tabMatch(url, search, action) {
     default:
       if (url.indexOf(search) !== -1) {
         return true;
-        break;
       }
+      break;
 
     case "2":
       if (url.substring(0, 4) === "http") {
@@ -27,8 +27,14 @@ function tabMatch(url, search, action) {
       }
       if (url === search) {
         return true;
-        break;
       }
+      break;
+
+    case "3":
+      if (search.test(url)) {
+        return true;
+      }
+      break;
   }
   return false;
 }
@@ -41,12 +47,13 @@ function pickTab(key) {
   pref.then((storage) => {
     var action = storage.pref.key[key].action;
     var tabUrl = storage.pref.key[key].url;
+    var regex = storage.pref.key[key].regex;
     var prefix = "https:";
 
     if (tabUrl.substring(0, 4) === "http") {
       var temp = tabUrl.split('/');
       prefix = temp[0];
-      temp.splice(0, 2)
+      temp.splice(0, 2);
       tabUrl = temp.join("/");
     }
 
@@ -57,6 +64,18 @@ function pickTab(key) {
         break;
       case "2":
         var searchString = tabUrl;
+        break;
+      case "3":
+        try {
+          var searchString = new RegExp(regex);
+        } catch (e) {
+          var searchString = "";
+          browser.notifications.create("hotkeytabs_error", {
+            "type": "basic",
+            "title": "Hotkey Tabs Error",
+            "message": "Regex Error (" + e.message + ")."
+          });
+        }
         break;
     }
 

@@ -1,5 +1,14 @@
 function saveOptions(e) {
   e.preventDefault();
+
+  for (var i = 0; i < 10; i++) {
+    if (document.querySelector("#a" + i).value === "3") {
+      document.getElementById("rb" + i).className = "";
+    } else {
+      document.getElementById("rb" + i).className = "hidden";
+    }
+  }
+
   browser.storage.local.set({
     pref: {
       mode: document.querySelector("#mode").value,
@@ -8,6 +17,7 @@ function saveOptions(e) {
         for (var i = 0; i < 10; i++) {
           settings.push({
             action: document.querySelector("#a" + i).value,
+            regex: document.querySelector("#r" + i).value,
             url: document.querySelector("#s" + i).value
           });
         }
@@ -24,6 +34,13 @@ function restoreOptions() {
     for (var i = 0; i < 10; i++) {
       document.querySelector("#a" + i).value = result.pref.key[i].action || "1";
       document.querySelector("#s" + i).value = result.pref.key[i].url || "";
+      document.querySelector("#r" + i).value = result.pref.key[i].regex || "";
+
+      if (result.pref.key[i].action === "3") {
+        document.getElementById("rb" + i).className = "";
+      } else {
+        document.getElementById("rb" + i).className = "hidden";
+      }
     }
   }
 
