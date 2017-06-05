@@ -134,10 +134,21 @@ function pickTab(key) {
           focused: true
         });
       } else if (tabUrl !== "") {
-        var newUrl = prefix + "//" + tabUrl;
-        browser.tabs.create({
-          url: newUrl
-        });
+        var gettingCurrent = browser.tabs.query({
+          currentWindow: true,
+          active: true
+        }).then((tabs) => {
+          var newUrl = prefix + "//" + tabUrl;
+          if (tabs[0].url === "about:newtab") {
+            browser.tabs.update({
+              url: newUrl
+            });
+          } else {
+            browser.tabs.create({
+              url: newUrl
+            });
+          }
+        })
       }
     });
   });
