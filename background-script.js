@@ -21,6 +21,9 @@ function tabMatch(url, search, action) {
       break;
 
     case "2":
+      if (url.slice(-1) === "/") {
+        url = url.slice(0, -1);
+      }
       if (url.substring(0, 4) === "http") {
         var temp = url.split('/');
         temp.splice(0, 2)
@@ -105,6 +108,9 @@ function pickTab(key) {
           break;
 
         case "1":
+          if (searchString.slice(-1) === "/") {
+            searchString = searchString.slice(0, -1);
+          }
           for (var i = 0; i < tabs.length; i++) {
             if (tabMatch(tabs[i].url, searchString, action)) {
               var tabId = i;
