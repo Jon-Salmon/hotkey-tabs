@@ -63,9 +63,13 @@ function pickTab(key) {
 
     switch (action) {
       case "1":
-      case "2":
       default:
         var searchString = tabUrl;
+        break;
+      case "2":
+        if (tabUrl.slice(-1) === "/") {
+          searchString = tabUrl.slice(0, -1);
+        }
         break;
       case "3":
         try {
@@ -108,9 +112,6 @@ function pickTab(key) {
           break;
 
         case "1":
-          if (searchString.slice(-1) === "/") {
-            searchString = searchString.slice(0, -1);
-          }
           for (var i = 0; i < tabs.length; i++) {
             if (tabMatch(tabs[i].url, searchString, action)) {
               var tabId = i;
