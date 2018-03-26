@@ -44,16 +44,15 @@ var ShortcutCustomizeUI = {
             shortcut: shortcut.join('+')
           });
           item.classList.remove('error');
-          callback();
+          typeof callback === "function" && callback();
         } catch (aError) {
-          console.log(aError);
           item.classList.add('error');
         }
       };
 
       const reset = () => {
         browser.commands.reset(command.name);
-        callback();
+        typeof callback === "function" && callback();
         browser.commands.getAll().then(aCommands => {
           for (let defaultCommand of aCommands) {
             if (defaultCommand.name != command.name)
