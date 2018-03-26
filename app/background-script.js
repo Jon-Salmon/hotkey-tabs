@@ -205,6 +205,11 @@ commands.then((commands) => {
       contexts: ["all"]
     });
   }
+  browser.contextMenus.create({
+    id: "openOptions",
+    title: "Configure hotkeys",
+    contexts: ["all"]
+  });
   updateContext();
 });
 
@@ -273,6 +278,10 @@ browser.tabs.onActivated.addListener(function(activeInfo) {
 
 // Context Menu listner
 browser.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "openOptions") {
+    browser.runtime.openOptionsPage();
+    return;
+  }
   var id = parseInt(info.menuItemId.split("").pop());
   let storage = browser.storage.local.get("pref");
   var tabUrl = tab.url;

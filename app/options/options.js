@@ -61,7 +61,10 @@ for (var i = 0; i < input.length; i++) {
 
 if (ShortcutCustomizeUI.available) {
   // Addes shortcut changer
-  ShortcutCustomizeUI.build(false).then(list => {
+  ShortcutCustomizeUI.build(function() {
+      browser.extension.getBackgroundPage().updateContext(); // update context menu
+    },
+    false).then(list => {
     var nodes = document.getElementsByClassName('shortcuts');
     for (var i = 0; i < nodes.length; i++) {
       nodes[i].appendChild(list.firstChild);

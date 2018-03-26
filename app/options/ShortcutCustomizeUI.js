@@ -15,7 +15,7 @@ var ShortcutCustomizeUI = {
     return this.commonClass = `shortcut-customize-ui-${this.uniqueKey}`;
   },
 
-  build: async function(showDescription) {
+  build: async function(callback, showDescription) {
     showDescription = (typeof showDescription === 'undefined') ? true : false;
     const isMac = /^Mac/i.test(navigator.platform);
     const commands = await browser.commands.getAll();
@@ -44,6 +44,7 @@ var ShortcutCustomizeUI = {
             shortcut: shortcut.join('+')
           });
           item.classList.remove('error');
+          callback();
         } catch (aError) {
           console.log(aError);
           item.classList.add('error');
@@ -52,6 +53,7 @@ var ShortcutCustomizeUI = {
 
       const reset = () => {
         browser.commands.reset(command.name);
+        callback();
         browser.commands.getAll().then(aCommands => {
           for (let defaultCommand of aCommands) {
             if (defaultCommand.name != command.name)
