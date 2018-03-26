@@ -272,8 +272,6 @@ browser.runtime.onInstalled.addListener(function(details) {
       });
       browser.runtime.openOptionsPage();
     } else {
-      console.log(storage.install);
-      console.log(manifest.version);
       if (storage.install !== manifest.version) {
         browser.notifications.create("hotkeytabs_update", {
           "type": "basic",

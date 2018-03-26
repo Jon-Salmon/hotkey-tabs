@@ -1,0 +1,4 @@
+[submodule "webextensions-lib-shortcut-customize-ui"]
+	path = webextensions-lib-shortcut-customize-ui
+	url = https://github.com/Jon-Salmon/webextensions-lib-shortcut-customize-ui.git
+	branch = hotkeyTabs

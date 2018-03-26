@@ -13,6 +13,8 @@ gulp.task('copy', function() {
       base: './app/'
     })
     .pipe(gulp.dest('build'));
+  gulp.src('webextensions-lib-shortcut-customize-ui/**/*.js')
+    .pipe(gulp.dest('build/webextensions-lib-shortcut-customize-ui'));
 });
 
 gulp.task('slim', function() {
@@ -40,6 +42,7 @@ gulp.task('css', function() {
 gulp.task('watch', function() {
   gulp.watch([
     './app/**/*.js',
+    './webextensions-lib-shortcut-customize-ui/**/*.js',
     './app/**/*.css',
     './app/**/*.json',
     './app/**/*.html'
