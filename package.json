@@ -1,0 +1,27 @@
+{
+  "name": "hotkey-tabs",
+  "version": "1.7.3",
+  "description": "This is the source code for a firefox addon that allows for the quick switching and loading of commonly used website and webpages with Alt-number keyboard shortcuts. If the specified website or webpage is open, then firefox will switch to that tab, else it will open the site in a new tab.",
+  "main": "background-script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "gulp build",
+    "build": "gulp build && cd build && web-ext build",
+    "firefox": "concurrently --kill-others \"gulp default\" \"cd build && web-ext run\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jon-Salmon/hotkey-tabs.git"
+  },
+  "author": "Jon Salmon",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Jon-Salmon/hotkey-tabs/issues"
+  },
+  "homepage": "https://github.com/Jon-Salmon/hotkey-tabs#readme",
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "gulp": "^3.9.1",
+    "gulp-slm": "^1.1.3"
+  }
+}

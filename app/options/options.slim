@@ -1,0 +1,317 @@
+doctype html
+html
+  head
+    meta charset="utf-8" /
+    css:
+      | *,
+        *::after,
+        *::before {
+          box-sizing: border-box;
+        }
+
+        body {
+        /!*font-size: 16px;*/
+          font-weight: normal;
+          color: rgb(51, 51, 51);
+          font-size: 14px;
+        }
+
+        h3 {
+          margin: 8px 0 8px;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        tr.line td div {
+          border-top: 1px solid #c1c1c1;
+          margin: 10px 0 10px;
+        }
+
+        td.label {
+          width: 150px;
+        }
+
+        input,
+        select {
+          width: 100%;
+          height: 36px;
+          padding: 6px 12px;
+          border: 1px solid #ccd0d2;
+          border-radius: 4px;
+        }
+
+        .hidden {
+          display: none;
+        }
+
+  body
+    form
+      table
+        tr
+          td
+            h3 General
+          td
+        tr
+          td.label
+            label Switching Mode:
+          td.input
+            select#mode.input
+              option value="0"  Last Visited Matching Tab
+              option value="1"  First Matching Tab
+              option value="2"  Last Matching Tab
+        tr.line
+          td colspan="2"
+            div
+
+        tr
+          td.label
+            h3 Hotkey 1
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s1.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a1.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb1.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r1.input type="text" /
+        tr.line
+          td colspan="2"
+            div
+
+        tr
+          td.label
+            h3 Hotkey 2
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s2.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a2.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb2.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r2.input type="text" /
+        tr.line
+          td colspan="2"
+            div
+        tr
+          td.label
+            h3 Hotkey 3
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s3.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a3.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb3.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r3.input type="text" /
+        tr.line
+          td colspan="2"
+            div
+        tr
+          td.label
+            h3 Hotkey 4
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s4.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a4.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb4.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r4.input type="text" /
+        tr.line
+          td colspan="2"
+            div
+        tr
+          td.label
+            h3 Hotkey 5
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s5.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a5.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb5.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r5.input type="text" /
+        tr.line
+          td colspan="2"
+            div
+        tr
+          td.label
+            h3 Hotkey 6
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s6.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a6.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb6.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r6.input type="text" /
+        tr.line
+          td colspan="2"
+            div
+        tr
+          td.label
+            h3 Hotkey 7
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s7.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a7.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb7.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r7.input type="text" /
+        tr.line
+          td colspan="2"
+            div
+        tr
+          td.label
+            h3 Hotkey 8
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s8.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a8.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb8.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r8.input type="text" /
+        tr.line
+          td colspan="2"
+            div
+        tr
+          td.label
+            h3 Hotkey 9
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s9.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a9.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb9.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r9.input type="text" /
+        tr.line
+          td colspan="2"
+            div
+        tr
+          td.label
+            h3 Hotkey 10
+          td
+        tr
+          td.label
+            label URL:
+          td.input
+            input#s0.input type="text" /
+        tr
+          td.label
+            label Action:
+          td.input
+            select#a0.input
+              option value="1"  Switch/Open Site
+              option value="2"  Switch/Open Page
+              option value="3"  RegEx Matching
+        tr#rb0.hidden
+          td.label
+            label RegEx pattern:
+          td.input
+            input#r0.input type="text" /
+    script src="options.js"
