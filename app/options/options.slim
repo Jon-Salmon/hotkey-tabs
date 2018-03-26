@@ -28,63 +28,14 @@
     td colspan="2"
       div
 
+
+
+
 doctype html
 html
   head
     meta charset="utf-8" /
-    css:
-      | *,
-        *::after,
-        *::before {
-          box-sizing: border-box;
-        }
-
-        body {
-        /!*font-size: 16px;*/
-          font-weight: normal;
-          color: rgb(51, 51, 51);
-          font-size: 14px;
-        }
-
-        h3 {
-          margin: 8px 0 8px;
-          display: inline;
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-
-        tr.line td div {
-          border-top: 1px solid #c1c1c1;
-          margin: 10px 0 10px;
-        }
-
-        td.label {
-          width: 150px;
-        }
-
-        input[type="text"],
-        select {
-          height: 36px;
-          padding: 6px 12px;
-          border: 1px solid #ccd0d2;
-          border-radius: 4px;
-        }
-
-        input[type="text"].input,
-        select {
-          width: 100%;
-        }
-
-        .hidden {
-          display: none;
-        }
-
-        .hotkeyDisplay {
-          display: inline;
-        }
+    link href="options.css" rel='stylesheet' type='text/css'
 
   body
     form
