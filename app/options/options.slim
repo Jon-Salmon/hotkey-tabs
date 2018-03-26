@@ -1,0 +1,71 @@
+= mixin('section', 'id')
+  tr
+    td.label colspan="2"
+      h3.hotkeyDisplay
+  tr.ff60
+    td.label Shortcut:
+    td
+      div.shortcuts
+  tr
+    td.label
+      label URL:
+    td.input
+      input.input id="s${this.id}" type="text" /
+  tr
+    td.label
+      label Action:
+    td.input
+      select.input id="a${this.id}"
+        option value="1"  Switch/Open Site
+        option value="2"  Switch/Open Page
+        option value="3"  RegEx Matching
+  tr.hidden id="rb${this.id}"
+    td.label
+      label RegEx pattern:
+    td.input
+      input.input id="r${this.id}" type="text" /
+  tr.line
+    td colspan="2"
+      div
+
+
+
+
+doctype html
+html
+  head
+    meta charset="utf-8" /
+    link href="options.css" rel='stylesheet' type='text/css'
+
+  body
+    form
+      table
+        tr
+          td
+            h3 General
+          td
+        tr
+          td.label
+            label Switching Mode:
+          td.input
+            select#mode.input
+              option value="0"  Last Visited Matching Tab
+              option value="1"  First Matching Tab
+              option value="2"  Last Matching Tab
+        tr.line
+          td colspan="2"
+            div
+
+        = mixin('section', 1)
+        = mixin('section', 2)
+        = mixin('section', 3)
+        = mixin('section', 4)
+        = mixin('section', 5)
+        = mixin('section', 6)
+        = mixin('section', 7)
+        = mixin('section', 8)
+        = mixin('section', 9)
+        = mixin('section', "0")
+
+    script src="../webextensions-lib-shortcut-customize-ui/ShortcutCustomizeUI.js"
+    script src="options.js"

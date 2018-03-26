@@ -52,9 +52,44 @@ function restoreOptions() {
   getting.then(setPref, onError);
 }
 
-document.addEventListener("DOMContentLoaded", restoreOptions);
+function renderHotkeyUpdate() {
+  let commands = browser.commands.getAll();
+  commands.then((commands) => {
+    var el = document.getElementsByClassName('hotkeyDisplay');
+    for (var i = 0; i < el.length; i++) {
+      el[i].innerText = commands[i].shortcut;
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  restoreOptions();
+  renderHotkeyUpdate();
+});
 
 var input = document.querySelectorAll('.input');
 for (var i = 0; i < input.length; i++) {
   input[i].addEventListener('change', saveOptions);
+}
+
+if (ShortcutCustomizeUI.available) {
+  // Addes shortcut changer
+  ShortcutCustomizeUI.build(
+    function() {
+      browser.extension.getBackgroundPage().updateContext(); // update context menu
+      renderHotkeyUpdate();
+    },
+    { showDescription: false }
+  ).then(list => {
+    var nodes = document.getElementsByClassName('shortcuts');
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].appendChild(list.firstChild);
+    }
+  });
+} else {
+  // Hide shortcut changer if not supported
+  var el = document.getElementsByClassName('ff60');
+  for (var i = 0; i < el.length; i++) {
+    el[i].className += ' hidden';
+  }
 }

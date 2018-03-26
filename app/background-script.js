@@ -162,24 +162,32 @@ function pickTab(key) {
 
 // Context menus backend
 function updateContext() {
-  let storage = browser.storage.local.get("pref");
-  storage.then((storage) => {
-
-    for (var i = 0; i < 10; i++) {
-      if (storage.pref.key[i] !== "") {
-        browser.contextMenus.update(
-          "alt" + i, {
-            title: "Bind to ALT-" + i + " (" + ((storage.pref.key[i].url) ? storage.pref.key[i].url : "...") + ")"
-          }
-        );
-      } else {
-        browser.contextMenus.update(
-          "alt" + i, {
-            title: "Bind to ALT-" + i + " (...)"
-          }
-        );
-      }
+  function internal(command, key) {
+    if (key !== "") {
+      browser.contextMenus.update(
+        command.name, {
+          title: "Bind to " + command.shortcut + " (" + ((key.url) ? key.url : "...") + ")"
+        }
+      );
+    } else {
+      browser.contextMenus.update(
+        command.name, {
+          title: "Bind to " + command.shortcut + " (...)"
+        }
+      );
     }
+  }
+
+  let commands = browser.commands.getAll();
+  let storage = browser.storage.local.get("pref");
+
+  storage.then((storage) => {
+    commands.then((commands) => {
+      for (var i = 0; i < commands.length - 1; i++) {
+        internal(commands[i], storage.pref.key[i + 1]);
+      }
+      internal(commands[commands.length - 1], storage.pref.key[0]);
+    });
   });
 };
 
@@ -188,67 +196,22 @@ function updateContext() {
 // Startup
 
 // Context Menu Creation
-browser.contextMenus.create({
-  id: "alt1",
-  title: "",
-  contexts: ["all"]
+let commands = browser.commands.getAll();
+commands.then((commands) => {
+  for (var i = 0; i < commands.length; i++) {
+    browser.contextMenus.create({
+      id: commands[i].name,
+      title: "",
+      contexts: ["all"]
+    });
+  }
+  browser.contextMenus.create({
+    id: "openOptions",
+    title: "Configure hotkeys",
+    contexts: ["all"]
+  });
+  updateContext();
 });
-
-browser.contextMenus.create({
-  id: "alt2",
-  title: "",
-  contexts: ["all"]
-});
-
-browser.contextMenus.create({
-  id: "alt3",
-  title: "",
-  contexts: ["all"]
-});
-
-browser.contextMenus.create({
-  id: "alt4",
-  title: "",
-  contexts: ["all"]
-});
-
-browser.contextMenus.create({
-  id: "alt5",
-  title: "",
-  contexts: ["all"]
-});
-
-browser.contextMenus.create({
-  id: "alt6",
-  title: "",
-  contexts: ["all"]
-});
-
-browser.contextMenus.create({
-  id: "alt7",
-  title: "",
-  contexts: ["all"]
-});
-
-browser.contextMenus.create({
-  id: "alt8",
-  title: "",
-  contexts: ["all"]
-});
-
-browser.contextMenus.create({
-  id: "alt9",
-  title: "",
-  contexts: ["all"]
-});
-
-browser.contextMenus.create({
-  id: "alt0",
-  title: "",
-  contexts: ["all"]
-});
-
-updateContext();
 
 
 
@@ -277,12 +240,6 @@ browser.notifications.onClicked.addListener(function(notificationId) {
 });
 
 browser.runtime.onInstalled.addListener(function(details) {
-  var manifest = browser.runtime.getManifest();
-  browser.notifications.create("hotkeytabs_update", {
-    "type": "basic",
-    "title": "Hotkey Tabs has been updated!",
-    "message": "You are now running version V" + manifest.version + "\nClick here for release notes."
-  });
 
   // Initialise defaults if not set
   let temp = browser.storage.local.get("pref");
@@ -305,6 +262,28 @@ browser.runtime.onInstalled.addListener(function(details) {
       });
     }
   });
+
+  var manifest = browser.runtime.getManifest();
+  let install = browser.storage.local.get("install");
+  install.then((storage) => {
+    if (storage.install === undefined) {
+      browser.storage.local.set({
+        install: manifest.version
+      });
+      browser.runtime.openOptionsPage();
+    } else {
+      if (storage.install !== manifest.version) {
+        browser.notifications.create("hotkeytabs_update", {
+          "type": "basic",
+          "title": "Hotkey Tabs has been updated!",
+          "message": "You are now running version V" + manifest.version + "\nClick here for release notes."
+        });
+        browser.storage.local.set({
+          install: manifest.version
+        });
+      }
+    }
+  });
 });
 
 // Most reecnt tab
@@ -315,6 +294,10 @@ browser.tabs.onActivated.addListener(function(activeInfo) {
 
 // Context Menu listner
 browser.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "openOptions") {
+    browser.runtime.openOptionsPage();
+    return;
+  }
   var id = parseInt(info.menuItemId.split("").pop());
   let storage = browser.storage.local.get("pref");
   var tabUrl = tab.url;
