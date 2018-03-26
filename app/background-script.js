@@ -240,12 +240,6 @@ browser.notifications.onClicked.addListener(function(notificationId) {
 });
 
 browser.runtime.onInstalled.addListener(function(details) {
-  var manifest = browser.runtime.getManifest();
-  browser.notifications.create("hotkeytabs_update", {
-    "type": "basic",
-    "title": "Hotkey Tabs has been updated!",
-    "message": "You are now running version V" + manifest.version + "\nClick here for release notes."
-  });
 
   // Initialise defaults if not set
   let temp = browser.storage.local.get("pref");
@@ -266,6 +260,30 @@ browser.runtime.onInstalled.addListener(function(details) {
           }()
         }
       });
+    }
+  });
+
+  var manifest = browser.runtime.getManifest();
+  let install = browser.storage.local.get("install");
+  install.then((storage) => {
+    if (storage.install === undefined) {
+      browser.storage.local.set({
+        install: manifest.version
+      });
+      browser.runtime.openOptionsPage();
+    } else {
+      console.log(storage.install);
+      console.log(manifest.version);
+      if (storage.install !== manifest.version) {
+        browser.notifications.create("hotkeytabs_update", {
+          "type": "basic",
+          "title": "Hotkey Tabs has been updated!",
+          "message": "You are now running version V" + manifest.version + "\nClick here for release notes."
+        });
+        browser.storage.local.set({
+          install: manifest.version
+        });
+      }
     }
   });
 });
