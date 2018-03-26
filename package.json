@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "gulp build",
     "build": "gulp build && cd build && web-ext build",
-    "firefox": "concurrently --kill-others \"gulp default\" \"cd build && web-ext run\""
+    "firefox": "concurrently --kill-others \"gulp default\" \"cd build && web-ext run\"",
+    "firefoxDev": "cd build && web-ext run --firefox=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\"",
+    "watch": "gulp watch"
   },
   "repository": {
     "type": "git",

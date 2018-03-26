@@ -58,3 +58,19 @@ var input = document.querySelectorAll('.input');
 for (var i = 0; i < input.length; i++) {
   input[i].addEventListener('change', saveOptions);
 }
+
+if (ShortcutCustomizeUI.available) {
+  // Addes shortcut changer
+  ShortcutCustomizeUI.build(false).then(list => {
+    var nodes = document.getElementsByClassName('shortcuts');
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].appendChild(list.firstChild);
+    }
+  });
+} else {
+  // Hide shortcut changer if not supported
+  var el = document.getElementsByClassName('ff60');
+  for (var i = 0; i < el.length; i++) {
+    el[i].className += ' hidden';
+  }
+}
