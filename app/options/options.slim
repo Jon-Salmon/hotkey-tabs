@@ -1,3 +1,33 @@
+= mixin('section', 'id')
+  tr
+    td.label colspan="2"
+      h3.hotkeyDisplay
+  tr.ff60
+    td.label Shortcut:
+    td
+      div.shortcuts
+  tr
+    td.label
+      label URL:
+    td.input
+      input.input id="s${this.id}" type="text" /
+  tr
+    td.label
+      label Action:
+    td.input
+      select.input id="a${this.id}"
+        option value="1"  Switch/Open Site
+        option value="2"  Switch/Open Page
+        option value="3"  RegEx Matching
+  tr.hidden id="rb${this.id}"
+    td.label
+      label RegEx pattern:
+    td.input
+      input.input id="r${this.id}" type="text" /
+  tr.line
+    td colspan="2"
+      div
+
 doctype html
 html
   head
@@ -75,302 +105,16 @@ html
           td colspan="2"
             div
 
-        tr
-          td.label colspan="2"
-            h3  Hotkey 1
-            p.hotkeyDisplay
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s1.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a1.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb1.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r1.input type="text" /
-        tr.line
-          td colspan="2"
-            div
+        = mixin('section', 1)
+        = mixin('section', 2)
+        = mixin('section', 3)
+        = mixin('section', 4)
+        = mixin('section', 5)
+        = mixin('section', 6)
+        = mixin('section', 7)
+        = mixin('section', 8)
+        = mixin('section', 9)
+        = mixin('section', 0)
 
-        tr
-          td.label colspan="2"
-            h3 Hotkey 2
-            p.hotkeyDisplay
-          td
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s2.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a2.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb2.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r2.input type="text" /
-        tr.line
-          td colspan="2"
-            div
-        tr
-          td.label colspan="2"
-            h3 Hotkey 3
-            p.hotkeyDisplay
-          td
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s3.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a3.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb3.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r3.input type="text" /
-        tr.line
-          td colspan="2"
-            div
-        tr
-          td.label colspan="2"
-            h3 Hotkey 4
-            p.hotkeyDisplay
-          td
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s4.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a4.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb4.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r4.input type="text" /
-        tr.line
-          td colspan="2"
-            div
-        tr
-          td.label colspan="2"
-            h3 Hotkey 5
-            p.hotkeyDisplay
-          td
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s5.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a5.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb5.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r5.input type="text" /
-        tr.line
-          td colspan="2"
-            div
-        tr
-          td.label colspan="2"
-            h3 Hotkey 6
-            p.hotkeyDisplay
-          td
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s6.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a6.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb6.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r6.input type="text" /
-        tr.line
-          td colspan="2"
-            div
-        tr
-          td.label colspan="2"
-            h3 Hotkey 7
-            p.hotkeyDisplay
-          td
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s7.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a7.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb7.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r7.input type="text" /
-        tr.line
-          td colspan="2"
-            div
-        tr
-          td.label colspan="2"
-            h3 Hotkey 8
-            p.hotkeyDisplay
-          td
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s8.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a8.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb8.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r8.input type="text" /
-        tr.line
-          td colspan="2"
-            div
-        tr
-          td.label colspan="2"
-            h3 Hotkey 9
-            p.hotkeyDisplay
-          td
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s9.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a9.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb9.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r9.input type="text" /
-        tr.line
-          td colspan="2"
-            div
-        tr
-          td.label colspan="2"
-            h3 Hotkey 10
-            p.hotkeyDisplay
-          td
-        tr.ff60
-          td.label Shortcut:
-          td
-            div.shortcuts
-        tr
-          td.label
-            label URL:
-          td.input
-            input#s0.input type="text" /
-        tr
-          td.label
-            label Action:
-          td.input
-            select#a0.input
-              option value="1"  Switch/Open Site
-              option value="2"  Switch/Open Page
-              option value="3"  RegEx Matching
-        tr#rb0.hidden
-          td.label
-            label RegEx pattern:
-          td.input
-            input#r0.input type="text" /
     script src="ShortcutCustomizeUI.js"
     script src="options.js"

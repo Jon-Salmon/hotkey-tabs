@@ -57,7 +57,7 @@ function renderHotkeyUpdate() {
   commands.then((commands) => {
     var el = document.getElementsByClassName('hotkeyDisplay');
     for (var i = 0; i < el.length; i++) {
-      el[i].innerText = " (" + commands[i].shortcut + ")";
+      el[i].innerText = commands[i].shortcut;
     }
   });
 }
