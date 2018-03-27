@@ -67,6 +67,7 @@ function pickTab(key) {
         var searchString = tabUrl;
         break;
       case "2":
+        var searchString = tabUrl;
         if (tabUrl.slice(-1) === "/") {
           searchString = tabUrl.slice(0, -1);
         }
