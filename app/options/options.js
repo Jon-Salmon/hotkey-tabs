@@ -75,17 +75,18 @@ for (var i = 0; i < input.length; i++) {
 if (ShortcutCustomizeUI.available) {
   // Addes shortcut changer
   ShortcutCustomizeUI.build(
-    function() {
-      browser.extension.getBackgroundPage().updateContext(); // update context menu
-      renderHotkeyUpdate();
-    },
     { showDescription: false }
   ).then(list => {
+    list.addEventListener('ShortcutChanged', event => {
+      browser.extension.getBackgroundPage().updateContext(); // update context menu
+      renderHotkeyUpdate();
+    });
     var nodes = document.getElementsByClassName('shortcuts');
     for (var i = 0; i < nodes.length; i++) {
       nodes[i].appendChild(list.firstChild);
     }
   });
+
 } else {
   // Hide shortcut changer if not supported
   var el = document.getElementsByClassName('ff60');
