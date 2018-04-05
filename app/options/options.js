@@ -75,7 +75,7 @@ for (var i = 0; i < input.length; i++) {
 if (ShortcutCustomizeUI.available) {
   // Addes shortcut changer
   ShortcutCustomizeUI.build(
-    { showDescription: false }
+    { showDescriptions: false }
   ).then(list => {
     list.addEventListener('ShortcutChanged', event => {
       browser.extension.getBackgroundPage().updateContext(); // update context menu
