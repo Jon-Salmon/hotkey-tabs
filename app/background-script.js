@@ -1,7 +1,7 @@
 // Global Variables
 var currentCounter = 0;
 var tabArray = [];
-
+var recentSimilarTabs = [];
 
 
 // Functions
@@ -47,6 +47,10 @@ function tabMatch(url, search, action) {
 function pickTab(key) {
   let pref = browser.storage.local.get("pref");
   let allTabs = browser.tabs.query({});
+  let currentTab = browser.tabs.query({
+    active: true,
+    windowId: browser.windows.WINDOW_ID_CURRENT
+  });
 
   pref.then((storage) => {
     var action = storage.pref.key[key].action;
@@ -87,76 +91,95 @@ function pickTab(key) {
     }
 
     var tabFound = false;
-    allTabs.then((tabs) => {
-      switch (storage.pref.mode) {
-        case "0":
-        default:
-          var matchArray = [];
-          var tabId = 0;
-          var maxValue = 0;
-          for (var i = 0; i < tabs.length; i++) {
-            if (tabMatch(tabs[i].url, searchString, action)) {
-              matchArray.push(i);
-              tabFound = true;
-            }
-          }
-          for (var i = 0; i < matchArray.length; i++) {
-            var temp = tabArray[tabs[matchArray[i]].id];
-            if (typeof temp == "undefined") {
-              temp = 0;
-            }
-            if (temp >= maxValue) {
-              tabId = matchArray[i];
-              maxValue = temp;
-            }
-          }
-          break;
+    currentTab.then((cTab) => {
 
-        case "1":
-          for (var i = 0; i < tabs.length; i++) {
-            if (tabMatch(tabs[i].url, searchString, action)) {
-              var tabId = i;
-              tabFound = true;
-              break;
-            }
-          }
-          break;
-
-        case "2":
-          for (var i = tabs.length - 1; i >= 0; i--) {
-            if (tabMatch(tabs[i].url, searchString, action)) {
-              var tabId = i;
-              tabFound = true;
-              break;
-            }
-          }
-          break;
+      if (tabMatch(cTab[0].url, searchString, action)) {
+        if (recentSimilarTabs.indexOf() === -1) {
+          recentSimilarTabs.push(cTab[0].id);
+        }
+      } else {
+        recentSimilarTabs.length = 0;
       }
 
-      if (tabFound) {
-        browser.tabs.update(tabs[tabId].id, {
-          active: true
-        });
-        browser.windows.update(tabs[tabId].windowId, {
-          focused: true
-        });
-      } else if (tabUrl !== "") {
-        var gettingCurrent = browser.tabs.query({
-          currentWindow: true,
-          active: true
-        }).then((tabs) => {
-          var newUrl = prefix + "//" + tabUrl;
-          if (tabs[0].url === "about:newtab") {
-            browser.tabs.update({
-              url: newUrl
-            });
-          } else {
-            browser.tabs.create({
-              url: newUrl
-            });
-          }
-        })
-      }
+      allTabs.then((tabs) => {
+        switch (storage.pref.mode) {
+          case "0":
+          default:
+            var matchArray = [];
+            var tabId = 0;
+            var maxValue = 0;
+            for (var i = 0; i < tabs.length; i++) {
+              if ((recentSimilarTabs.indexOf(tabs[i].id) === -1) && tabMatch(tabs[i].url, searchString, action)) {
+                matchArray.push(i);
+                tabFound = true;
+              }
+            }
+            for (var i = 0; i < matchArray.length; i++) {
+              var temp = tabArray[tabs[matchArray[i]].id];
+              if (typeof temp == "undefined") {
+                temp = 0;
+              }
+              if (temp >= maxValue) {
+                tabId = matchArray[i];
+                maxValue = temp;
+              }
+            }
+            break;
+
+          case "1":
+            for (var i = 0; i < tabs.length; i++) {
+              if ((recentSimilarTabs.indexOf(tabs[i].id) === -1) && tabMatch(tabs[i].url, searchString, action)) {
+                var tabId = i;
+                tabFound = true;
+                break;
+              }
+            }
+            break;
+
+          case "2":
+            for (var i = tabs.length - 1; i >= 0; i--) {
+              if ((recentSimilarTabs.indexOf(tabs[i].id) === -1) && tabMatch(tabs[i].url, searchString, action)) {
+                var tabId = i;
+                tabFound = true;
+                break;
+              }
+            }
+            break;
+        }
+
+        if (tabFound) {
+          browser.tabs.update(tabs[tabId].id, {
+            active: true
+          });
+          browser.windows.update(tabs[tabId].windowId, {
+            focused: true
+          });
+        } else if (recentSimilarTabs.length > 0) {
+          browser.tabs.update(tabs.find(x => x.id === recentSimilarTabs[0]).id, {
+            active: true
+          });
+          browser.windows.update(tabs.find(x => x.id === recentSimilarTabs[0]).windowId, {
+            focused: true
+          });
+          recentSimilarTabs.shift();
+        } else if (tabUrl !== "") {
+          var gettingCurrent = browser.tabs.query({
+            currentWindow: true,
+            active: true
+          }).then((tabs) => {
+            var newUrl = prefix + "//" + tabUrl;
+            if (tabs[0].url === "about:newtab") {
+              browser.tabs.update({
+                url: newUrl
+              });
+            } else {
+              browser.tabs.create({
+                url: newUrl
+              });
+            }
+          })
+        }
+      });
     });
   });
 };
