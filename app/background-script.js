@@ -2,6 +2,8 @@
 var currentCounter = 0;
 var tabArray = [];
 var recentSimilarTabs = [];
+var recentSimilarTabs = [];
+var lastTab = 0;
 
 
 // Functions
@@ -99,6 +101,7 @@ function pickTab(key) {
         }
       } else {
         recentSimilarTabs.length = 0;
+        lastTab = cTab[0].id;
       }
 
       allTabs.then((tabs) => {
@@ -154,7 +157,15 @@ function pickTab(key) {
           browser.windows.update(tabs[tabId].windowId, {
             focused: true
           });
-        } else if (recentSimilarTabs.length > 0) {
+        } else if (recentSimilarTabs.length === 1) {
+          browser.tabs.update(tabs.find(x => x.id === lastTab).id, {
+            active: true
+          });
+          browser.windows.update(tabs.find(x => x.id === lastTab).windowId, {
+            focused: true
+          });
+          recentSimilarTabs.shift();
+        } else if (recentSimilarTabs.length > 1) {
           browser.tabs.update(tabs.find(x => x.id === recentSimilarTabs[0]).id, {
             active: true
           });
