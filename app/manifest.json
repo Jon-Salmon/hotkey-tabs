@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "Hotkey Tabs",
-  "version": "1.8.1",
+  "version": "1.9.0",
 
   "applications": {
     "gecko": {
