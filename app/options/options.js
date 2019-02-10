@@ -1,3 +1,4 @@
+// Saves all settings values to persistent storage
 function saveOptions(e) {
   e.preventDefault();
 
@@ -27,6 +28,7 @@ function saveOptions(e) {
   });
 };
 
+// Restore settings from persistent storage
 function restoreOptions() {
 
   function setPref(result) {
@@ -52,6 +54,7 @@ function restoreOptions() {
   getting.then(setPref, onError);
 }
 
+// Show current shortcut keys
 function renderHotkeyUpdate() {
   let commands = browser.commands.getAll();
   commands.then((commands) => {
@@ -62,11 +65,13 @@ function renderHotkeyUpdate() {
   });
 }
 
+// Populate options screen when it gets opened
 document.addEventListener("DOMContentLoaded", function() {
   restoreOptions();
   renderHotkeyUpdate();
 });
 
+// Adds listeners to all settings to save when changed
 var input = document.querySelectorAll('.input');
 for (var i = 0; i < input.length; i++) {
   input[i].addEventListener('change', saveOptions);

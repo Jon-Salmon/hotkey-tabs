@@ -1,7 +1,9 @@
+// Core add-on file
+// This script runs in the background and handles everything except the settings page.
+
 // Global Variables
 var currentCounter = 0;
 var tabArray = [];
-var recentSimilarTabs = [];
 var recentSimilarTabs = [];
 var lastTab = 0;
 
@@ -9,12 +11,15 @@ var lastTab = 0;
 // Functions
 
 // Tab switching
+// Boolean : Checks wether a tab matches the correct criteria
 function tabMatch(url, search, action) {
   if (search === "") {
     return false;
   }
 
+  // Switch on the type of match
   switch (action) {
+    // Switch/open site
     case "1":
     default:
       if (url.indexOf(search) !== -1) {
@@ -22,6 +27,7 @@ function tabMatch(url, search, action) {
       }
       break;
 
+    // Switch/open page
     case "2":
       if (url.slice(-1) === "/") {
         url = url.slice(0, -1);
@@ -36,6 +42,7 @@ function tabMatch(url, search, action) {
       }
       break;
 
+    // Regex matching
     case "3":
       if (search.test(url)) {
         return true;
@@ -46,7 +53,9 @@ function tabMatch(url, search, action) {
 }
 
 
+// Find and switch to new tab
 function pickTab(key) {
+  // Start asynchronous requests
   let pref = browser.storage.local.get("pref");
   let allTabs = browser.tabs.query({});
   let currentTab = browser.tabs.query({
@@ -55,11 +64,13 @@ function pickTab(key) {
   });
 
   pref.then((storage) => {
+    // load variables from persistent storage
     var action = storage.pref.key[key].action;
     var tabUrl = storage.pref.key[key].url;
     var regex = storage.pref.key[key].regex;
     var prefix = "https:";
 
+    // clean the search url
     if (tabUrl.substring(0, 4) === "http") {
       var temp = tabUrl.split('/');
       prefix = temp[0];
@@ -67,17 +78,22 @@ function pickTab(key) {
       tabUrl = temp.join("/");
     }
 
+    // set the search string depeding on the switching mode set in the settings
     switch (action) {
+      // Match website
       case "1":
       default:
         var searchString = tabUrl;
         break;
+      // Match webpages
       case "2":
         var searchString = tabUrl;
+        // trim the final slash if pressent
         if (tabUrl.slice(-1) === "/") {
           searchString = tabUrl.slice(0, -1);
         }
         break;
+      // Match via regex
       case "3":
         try {
           var searchString = new RegExp(regex);
@@ -96,16 +112,20 @@ function pickTab(key) {
     currentTab.then((cTab) => {
 
       if (tabMatch(cTab[0].url, searchString, action)) {
+        // Add to similar tabs to allow moving between identical tabs
         if (recentSimilarTabs.indexOf() === -1) {
           recentSimilarTabs.push(cTab[0].id);
         }
       } else {
+        // Clear recent tabs list if moving to a new matching critera
         recentSimilarTabs.length = 0;
         lastTab = cTab[0].id;
       }
 
       allTabs.then((tabs) => {
+        // Switch by search direction
         switch (storage.pref.mode) {
+          // Find last visited matching tab
           case "0":
           default:
             var matchArray = [];
@@ -129,6 +149,7 @@ function pickTab(key) {
             }
             break;
 
+          // Find first matching tab
           case "1":
             for (var i = 0; i < tabs.length; i++) {
               if ((recentSimilarTabs.indexOf(tabs[i].id) === -1) && tabMatch(tabs[i].url, searchString, action)) {
@@ -139,6 +160,7 @@ function pickTab(key) {
             }
             break;
 
+          // Find last matching tab
           case "2":
             for (var i = tabs.length - 1; i >= 0; i--) {
               if ((recentSimilarTabs.indexOf(tabs[i].id) === -1) && tabMatch(tabs[i].url, searchString, action)) {
@@ -151,6 +173,7 @@ function pickTab(key) {
         }
 
         if (tabFound) {
+          // Move to new tab if found
           browser.tabs.update(tabs[tabId].id, {
             active: true
           });
@@ -158,6 +181,7 @@ function pickTab(key) {
             focused: true
           });
         } else if (recentSimilarTabs.length === 1) {
+          // Move to previous tab (if it matched previously)
           browser.tabs.update(tabs.find(x => x.id === lastTab).id, {
             active: true
           });
@@ -166,6 +190,7 @@ function pickTab(key) {
           });
           recentSimilarTabs.shift();
         } else if (recentSimilarTabs.length > 1) {
+          // Move to previously visited matching tab
           browser.tabs.update(tabs.find(x => x.id === recentSimilarTabs[0]).id, {
             active: true
           });
@@ -174,6 +199,7 @@ function pickTab(key) {
           });
           recentSimilarTabs.shift();
         } else if (tabUrl !== "") {
+          // Otherwise open a new tab at the required page
           var gettingCurrent = browser.tabs.query({
             currentWindow: true,
             active: true
@@ -196,6 +222,7 @@ function pickTab(key) {
 };
 
 // Context menus backend
+// Updates the context menu options
 function updateContext() {
   function internal(command, key) {
     if (key !== "") {
@@ -234,17 +261,20 @@ function updateContext() {
 let commands = browser.commands.getAll();
 commands.then((commands) => {
   for (var i = 0; i < commands.length; i++) {
+    // Creates a context menu item for each shortcut key
     browser.contextMenus.create({
       id: commands[i].name,
       title: "",
       contexts: ["all"]
     });
   }
+  // Creates a context menu item for opening the add-on settings
   browser.contextMenus.create({
     id: "openOptions",
     title: "Configure hotkeys",
     contexts: ["all"]
   });
+  // Sets text for all newly created context menus
   updateContext();
 });
 
@@ -256,7 +286,9 @@ commands.then((commands) => {
 // Listen to shortcuts
 browser.commands.onCommand.addListener(function(command) {
   var id = parseInt(command.split("").pop());
+  // Check the shortcut is handled by app
   if (command === "alt" + id) {
+    // Perform the required action
     pickTab(id);
   }
 });
@@ -298,6 +330,7 @@ browser.runtime.onInstalled.addListener(function(details) {
     }
   });
 
+  // Check and store install/update status
   var manifest = browser.runtime.getManifest();
   let install = browser.storage.local.get("install");
   install.then((storage) => {
@@ -322,27 +355,34 @@ browser.runtime.onInstalled.addListener(function(details) {
 });
 
 // Most reecnt tab
+// Stores visited tabs in order for 'most recent' switching
 browser.tabs.onActivated.addListener(function(activeInfo) {
   tabArray[activeInfo.tabId] = currentCounter;
   currentCounter++;
 });
 
 // Context Menu listner
+// Handle all context menu clicks
 browser.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "openOptions") {
+    // Open options page
     browser.runtime.openOptionsPage();
     return;
   }
+    
+  // Otherwise, store the currnt website details
   var id = parseInt(info.menuItemId.split("").pop());
   let storage = browser.storage.local.get("pref");
   var tabUrl = tab.url;
 
+  // Cleans http/https components
   if (tabUrl.substring(0, 4) === "http") {
     var temp = tabUrl.split('/');
     temp.splice(3);
     tabUrl = temp.join("/");
   }
 
+  // Save to persistent storage
   storage.then((storage) => {
     var newPrefs = storage.pref;
     newPrefs.key[id].url = tabUrl;
@@ -352,6 +392,7 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
   });
 });
 
+// Update the contex menu everytime the persistent storage is written to
 browser.storage.onChanged.addListener(function() {
   updateContext();
 });
