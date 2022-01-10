@@ -4,7 +4,7 @@ This is the source code for a firefox addon that allows for the quick switching 
 
 ### Build instructions:
 Use the gulp.js file to process the source slim files into html and output the application into the ./build directory.
-Load the addon into Firefox using the [web-ext](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Getting_started_with_web-ext) tool.
+Load the addon into Firefox using the [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) tool.
 
 ### Addon usage instructions:
 1. Go to the options page for "Hotkey Tabs" in the about:addons page
